@@ -2,6 +2,7 @@
 
 ENV="dev"
 REGION="us-west-2"
+CLOUDFRONT_ID="E3035ZUEYA3O1Q"
 
 echo "ENV: $ENV"
 echo "REGION: $REGION"
@@ -16,5 +17,7 @@ then
 else
     echo "SYCNING DESIGN SYSTEM BUCKET"
     aws s3 sync ./assets s3://$S3_BUCKET_DESIGN_SYSTEM --exclude "*DS_Store" --exclude "**/*.DS_Store"
+    echo "INVALIDATING CLOUDFRONT DISTRIBUTION"
+    aws cloudfront create-invalidation --distribution-id "$CLOUDFRONT_ID" --paths "/*"
     echo "DESIGN SYSTEM BUCKET SYNCHED"
 fi
